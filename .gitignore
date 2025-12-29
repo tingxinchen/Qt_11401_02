@@ -1,0 +1,27 @@
+# Qt specific
+*.pro.user
+*.pro.user.*
+moc_*.cpp
+moc_*.h
+qrc_*.cpp
+ui_*.h
+*.o
+*.moc
+Makefile
+.qmake.stash
+
+# Build artifacts
+ChatApp
+*.exe
+*.app
+
+# OS specific
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
