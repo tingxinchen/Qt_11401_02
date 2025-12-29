@@ -48,7 +48,7 @@ void ChatWindow::on_sendButton_clicked()
     }
     
     // Format: "FRIEND_NAME:MESSAGE_TEXT"
-    QString formattedMessage = QString("本機:%1").arg(message);
+    QString formattedMessage = QString("%1:%2").arg(friendName, message);
     QByteArray data = formattedMessage.toUtf8();
     
     tcpSocket->write(data);
@@ -95,8 +95,11 @@ void ChatWindow::receiveMessage(const QString &message)
 void ChatWindow::setSocket(QTcpSocket *socket)
 {
     if (tcpSocket && tcpSocket != socket) {
+        // Disconnect all signals from old socket
+        disconnect(tcpSocket, nullptr, this, nullptr);
         tcpSocket->disconnectFromHost();
         tcpSocket->deleteLater();
+        tcpSocket = nullptr;  // Clear pointer before assigning new socket
     }
     
     tcpSocket = socket;

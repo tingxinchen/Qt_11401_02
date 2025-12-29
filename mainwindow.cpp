@@ -174,8 +174,22 @@ void MainWindow::clientDisconnected()
 {
     QTcpSocket *socket = qobject_cast<QTcpSocket*>(sender());
     if (socket) {
+        // Check for remaining connections before removing this socket
+        bool hasOtherConnections = false;
+        for (QTcpSocket *s : socketToFriend.keys()) {
+            if (s != socket && s->state() == QAbstractSocket::ConnectedState) {
+                hasOtherConnections = true;
+                break;
+            }
+        }
+        
         socketToFriend.remove(socket);
         socket->deleteLater();
+        
+        // Update server status label if no more connected clients
+        if (!hasOtherConnections && tcpServer->isListening()) {
+            ui->serverStatusLabel->setText(QString("伺服器運行中 (連接埠: %1)").arg(serverPort));
+        }
     }
 }
 
@@ -184,7 +198,10 @@ void MainWindow::saveFriendsList()
     QString configPath = QStandardPaths::writableLocation(QStandardPaths::AppDataLocation);
     QDir dir;
     if (!dir.exists(configPath)) {
-        dir.mkpath(configPath);
+        if (!dir.mkpath(configPath)) {
+            qWarning() << "Failed to create config directory:" << configPath;
+            return;
+        }
     }
     
     QFile file(configPath + "/friends.txt");
@@ -194,6 +211,12 @@ void MainWindow::saveFriendsList()
             out << ui->friendsList->item(i)->text() << "\n";
         }
         file.close();
+        
+        if (out.status() != QTextStream::Ok) {
+            qWarning() << "Error writing friends list to file";
+        }
+    } else {
+        qWarning() << "Failed to open friends list file for writing:" << file.errorString();
     }
 }
 
