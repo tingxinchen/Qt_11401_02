@@ -9,7 +9,6 @@
 Widget::Widget(QWidget *parent)
     : QWidget(parent)
 {
-    // --- 1. 手動建構 UI 介面 ---
     this->setWindowTitle("TCP 通訊伺服器 ");
     this->resize(400, 300);
 
