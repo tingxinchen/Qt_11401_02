@@ -14,16 +14,16 @@ ChatClient::ChatClient(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // 1. 連結網路收訊號
+    // 1. 連結網路
     connect(socket, &QTcpSocket::readyRead, this, &ChatClient::onReadyRead);
 
-    // 2. 處理連線成功
+    // 2. 連線成功
     connect(socket, &QTcpSocket::connected, this, [=](){
         ui->chatDisplay->addItem("系統提示: 成功連線到伺服器！");
         ui->connectBtn->setEnabled(false); // 連線後停用按鈕
     });
 
-    // 3. 連結好友名單點擊事件
+    // 3. 連結好友名單
     connect(ui->userList, &QListWidget::itemClicked, this, &ChatClient::onUserSelected);
 }
 
@@ -33,10 +33,10 @@ ChatClient::~ChatClient()
     delete ui;
 }
 
-// --- 連線按鈕邏輯 ---
+// --- 連線按鈕 ---
 void ChatClient::on_connectBtn_clicked()
 {
-    // 預設暱稱邏輯：沒填就是「用戶1」
+    // 預設暱稱：沒填就是「用戶1」
     myName = ui->nameEdit->text().trimmed();
     if (myName.isEmpty()) {
         myName = "用戶1";
@@ -60,7 +60,7 @@ void ChatClient::on_connectBtn_clicked()
     }
 }
 
-// --- 好友選取邏輯 ---
+// --- 好友選取 ---
 void ChatClient::onUserSelected()
 {
     if (ui->userList->currentItem()) {
@@ -69,7 +69,7 @@ void ChatClient::onUserSelected()
     }
 }
 
-// --- 文字傳送邏輯 ---
+// --- 文字傳送 ---
 void ChatClient::on_sendBtn_clicked()
 {
     if (currentTarget.isEmpty()) {
@@ -93,7 +93,7 @@ void ChatClient::on_sendBtn_clicked()
     ui->msgEdit->clear();
 }
 
-// --- 檔案傳送邏輯 (Base64) ---
+// --- 檔案傳送  ---
 void ChatClient::on_fileBtn_clicked()
 {
     if (currentTarget.isEmpty()) {
@@ -116,11 +116,11 @@ void ChatClient::on_fileBtn_clicked()
         fileObj["fileContent"] = QString(fileData.toBase64()); // 轉成 Base64 字串
 
         socket->write(QJsonDocument(fileObj).toJson());
-        ui->chatDisplay->addItem(QString("[系統] 已傳送檔案: %1").arg(fileObj["fileName"].toString()));
+        ui->chatDisplay->addItem(QString("已傳送檔案: %1").arg(fileObj["fileName"].toString()));
     }
 }
 
-// --- 接收訊息邏輯 (你剛才寫的部分) ---
+// --- 接收訊息 ---
 void ChatClient::onReadyRead()
 {
     QByteArray data = socket->readAll();
