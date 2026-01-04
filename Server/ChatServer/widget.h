@@ -30,7 +30,7 @@ private slots:
 
     // 事件
     void onNewConnection();   // 處理Client連入
-    void onReadyRead();       // 解析與轉發 JSON 訊息 (含文字、檔案)
+    void onReadyRead();       // 轉發訊息
     void onDisconnected();    // 處理成員離開並更新名單
 
 private:
@@ -41,11 +41,11 @@ private:
 
     // 核心
     QTcpServer *tcpServer;
-    QMap<QString, QTcpSocket*> clientList; // 在線名單映射 [暱稱 -> 使用者]
+    QMap<QString, QTcpSocket*> clientList; // 在線名單[暱稱 -> 使用者]
 
     // 輔助
     void updateUserList();    // 廣播最新在線名單
-    void setupUI();           // 初始化介面佈局
+    void setupUI();           // 介面
 };
 
 #endif

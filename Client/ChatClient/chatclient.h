@@ -28,6 +28,7 @@ private slots:
     void on_fileBtn_clicked();
     void onReadyRead();      // 處理接收到的訊息
     void onUserSelected();   // 好友名單選取
+    void on_disconnectBtn_clicked(); //中斷連線按鈕
 
 private:
     Ui::ChatClient *ui;

@@ -43,6 +43,13 @@
           </property>
          </widget>
         </item>
+        <item>
+         <widget class="QPushButton" name="disconnectBtn">
+          <property name="text">
+           <string>斷開連線</string>
+          </property>
+         </widget>
+        </item>
        </layout>
       </item>
      </layout>
