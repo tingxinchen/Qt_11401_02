@@ -34,6 +34,9 @@
           <property name="text">
            <string>送出</string>
           </property>
+          <property name="shortcut">
+           <string>Return</string>
+          </property>
          </widget>
         </item>
         <item>
