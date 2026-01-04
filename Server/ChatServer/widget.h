@@ -9,6 +9,11 @@
 #include <QTextEdit>
 #include <QLabel>
 #include <QMap>
+#include <QVBoxLayout>
+#include <QHBoxLayout>
+#include <QJsonDocument>
+#include <QJsonObject>
+#include <QJsonArray>
 
 class Widget : public QWidget
 {
@@ -19,22 +24,28 @@ public:
     ~Widget();
 
 private slots:
-    void startServer();       // 按下啟動按鈕
-    void onNewConnection();   // 處理新連線
-    void onReadyRead();       // 讀取並分發 JSON 訊息
-    void onDisconnected();    // 處理斷線
+    // Server
+    void startServer();       // 啟動
+    void stopServer();        // 關閉伺服器
+
+    // 事件
+    void onNewConnection();   // 處理Client連入
+    void onReadyRead();       // 轉發訊息
+    void onDisconnected();    // 處理成員離開並更新名單
 
 private:
-    // UI 元件
-    QLineEdit *ipEdit;
-    QLineEdit *portEdit;
-    QPushButton *startBtn;
-    QTextEdit *logEdit;       // 顯示 Server 狀態 Log
+    // UI
+    QLineEdit *ipEdit, *portEdit;
+    QPushButton *startBtn, *stopBtn;
+    QTextEdit *logEdit;       // 伺服器日誌
 
-    // 網路元件
+    // 核心
     QTcpServer *tcpServer;
-    QMap<QString, QTcpSocket*> clientList; // 暱稱 -> Socket
+    QMap<QString, QTcpSocket*> clientList; // 在線名單[暱稱 -> 使用者]
 
-    void updateUserList();    // 廣播名單
+    // 輔助
+    void updateUserList();    // 廣播最新在線名單
+    void setupUI();           // 介面
 };
+
 #endif
