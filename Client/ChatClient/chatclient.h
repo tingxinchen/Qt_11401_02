@@ -2,9 +2,9 @@
 #define CHATCLIENT_H
 
 #include <QMainWindow>
-#include <QTcpSocket>    // 必須加這個才能連線 [cite: 18]
+#include <QTcpSocket>    // TCP
 #include <QHostAddress>
-#include <QJsonDocument> // 處理 JSON 格式
+#include <QJsonDocument> // 處理訊息
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QFile>
@@ -22,18 +22,18 @@ public:
     ~ChatClient();
 
 private slots:
-    // 對應你 UI 上的元件名稱
+    // UI上的元件名稱
     void on_connectBtn_clicked();
     void on_sendBtn_clicked();
     void on_fileBtn_clicked();
-    void onReadyRead();      // 處理接收到的訊息 [cite: 28]
+    void onReadyRead();      // 處理接收到的訊息
     void onUserSelected();   // 好友名單選取
 
 private:
     Ui::ChatClient *ui;
-    QTcpSocket *socket;      // 建立伺服器連線的物件 [cite: 18]
+    QTcpSocket *socket;      // 建立伺服器連線的物件
     QString myName;
-    QString currentTarget;   // 一對一聊天的目標 [cite: 44]
+    QString currentTarget;   // 一對一聊天的目標
 };
 
 #endif

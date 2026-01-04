@@ -26,10 +26,10 @@ public:
 private slots:
     // Server
     void startServer();       // 啟動
-    void stopServer();        // 斷開所有連線並關閉 Server
+    void stopServer();        // 關閉伺服器
 
     // 事件
-    void onNewConnection();   // 處理新 Client 連入
+    void onNewConnection();   // 處理Client連入
     void onReadyRead();       // 解析與轉發 JSON 訊息 (含文字、檔案)
     void onDisconnected();    // 處理成員離開並更新名單
 
@@ -39,13 +39,13 @@ private:
     QPushButton *startBtn, *stopBtn;
     QTextEdit *logEdit;       // 伺服器日誌
 
-    // 核心物件
+    // 核心
     QTcpServer *tcpServer;
-    QMap<QString, QTcpSocket*> clientList; // 在線名單映射 [暱稱 -> Socket] [cite: 39, 46]
+    QMap<QString, QTcpSocket*> clientList; // 在線名單映射 [暱稱 -> 使用者]
 
     // 輔助
-    void updateUserList();    // 廣播最新在線名單 [cite: 11]
-    void setupUI();           // 初始化介面佈局 [cite: 19]
+    void updateUserList();    // 廣播最新在線名單
+    void setupUI();           // 初始化介面佈局
 };
 
 #endif

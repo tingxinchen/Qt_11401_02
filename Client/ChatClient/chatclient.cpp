@@ -14,13 +14,13 @@ ChatClient::ChatClient(QWidget *parent)
 {
     ui->setupUi(this);
 
-    // 1. 連結網路
+    // 1. 連結
     connect(socket, &QTcpSocket::readyRead, this, &ChatClient::onReadyRead);
 
     // 2. 連線成功
     connect(socket, &QTcpSocket::connected, this, [=](){
         ui->chatDisplay->addItem("系統提示: 成功連線到伺服器！");
-        ui->connectBtn->setEnabled(false); // 連線後停用按鈕
+        ui->connectBtn->setEnabled(false); //連線後停用按鈕
     });
 
     // 3. 連結好友名單
@@ -33,10 +33,10 @@ ChatClient::~ChatClient()
     delete ui;
 }
 
-// --- 連線按鈕 ---
+//連線按鈕
 void ChatClient::on_connectBtn_clicked()
 {
-    // 預設暱稱：沒填就是「用戶1」
+    //預設暱稱：用戶1
     myName = ui->nameEdit->text().trimmed();
     if (myName.isEmpty()) {
         myName = "用戶1";
@@ -46,10 +46,10 @@ void ChatClient::on_connectBtn_clicked()
     QString ip = ui->ipEdit->text();
     quint16 port = ui->Port->text().toUShort();
 
-    // 連線到指定 IP
+    //連線到指定IP
     socket->connectToHost(ip, port);
 
-    // 連線成功後發送登入 JSON
+    // 連線成功後發送登入JSON
     if (socket->waitForConnected(3000)) {
         QJsonObject login;
         login["type"] = "login";
@@ -60,7 +60,7 @@ void ChatClient::on_connectBtn_clicked()
     }
 }
 
-// --- 好友選取 ---
+//好友選取
 void ChatClient::onUserSelected()
 {
     if (ui->userList->currentItem()) {
@@ -69,7 +69,7 @@ void ChatClient::onUserSelected()
     }
 }
 
-// --- 文字傳送 ---
+//文字傳送
 void ChatClient::on_sendBtn_clicked()
 {
     if (currentTarget.isEmpty()) {
@@ -93,7 +93,7 @@ void ChatClient::on_sendBtn_clicked()
     ui->msgEdit->clear();
 }
 
-// --- 檔案傳送  ---
+//檔案傳送
 void ChatClient::on_fileBtn_clicked()
 {
     if (currentTarget.isEmpty()) {
@@ -120,7 +120,7 @@ void ChatClient::on_fileBtn_clicked()
     }
 }
 
-// --- 接收訊息 ---
+//接收訊息
 void ChatClient::onReadyRead()
 {
     QByteArray data = socket->readAll();
